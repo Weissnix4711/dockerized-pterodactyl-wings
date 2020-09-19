@@ -45,7 +45,7 @@ services:
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --standalone; sleep 12h & wait $${!}; done;'"
 
     volumes:
-      "./certbot/conf:/etc/letsencrypt"
+      - "./certbot/conf:/etc/letsencrypt"
 
     # Necessary for validation
     ports:
