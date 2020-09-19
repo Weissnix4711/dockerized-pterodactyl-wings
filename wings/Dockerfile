@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 ARG wings_ver
-ENV WINGS_VER ${wings_ver}}
+ENV WINGS_VER ${wings_ver}
 
 WORKDIR /var/lib/pterodactyl
 RUN mkdir -p /etc/pterodactyl
