@@ -1,0 +1,5 @@
+/certbot/conf/*
+/wings/config/*
+/wings/lib/*
+/wings/log/*
+/wings/tmp/*
