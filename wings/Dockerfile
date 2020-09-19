@@ -6,6 +6,8 @@ ENV WINGS_VER ${wings_ver}}
 WORKDIR /var/lib/pterodactyl
 RUN mkdir -p /etc/pterodactyl
 
+RUN apk add curl
+
 RUN curl -L -o /usr/local/bin/wings https://github.com/pterodactyl/wings/releases/download/${WINGS_VER}/wings_linux_amd64
 
 EXPOSE 8080
