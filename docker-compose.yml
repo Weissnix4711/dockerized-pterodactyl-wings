@@ -1,0 +1,52 @@
+version: '3'
+services:
+
+  ############
+  ## DAEMON ##
+  ############
+
+  daemon:
+
+    build:
+      context: ./wings
+      args:
+        wings_ver: v1.0.0-rc.6
+    restart: unless-stopped
+
+    volumes:
+      # The following volumes must not be edited,
+      # as they are needed for the daemon to function properly.
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/var/lib/docker:/var/lib/docker"
+
+      # Only change the left hand side of these mounts (the host),
+      # unless you know what you are doing.
+      # This is to keep configuration as simple as possible.
+      - "./wings/config:/etc/pterodactyl"
+      - "./wings/lib:/var/lib/pterodactyl"
+      - "./wings/log:/var/log/pterodactyl"
+      - "./wings/tmp:/tmp/pterodactyl"
+
+      # Certbot
+      - "./certbot/conf:/etc/letsencrypt"
+
+    ports:
+      - 2022:2022
+      - 8080:8080
+
+  #############
+  ## CERTBOT ##
+  #############
+
+  certbot:
+
+    image: certbot/certbot
+    restart: unless-stopped
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --standalone; sleep 12h & wait $${!}; done;'"
+
+    volumes:
+      "./certbot/conf:/etc/letsencrypt"
+
+    # Necessary for validation
+    ports:
+      - 80:80
